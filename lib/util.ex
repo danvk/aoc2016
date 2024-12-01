@@ -16,4 +16,8 @@ defmodule Util do
   def pos_str(pos) do
     "#{elem(pos, 0)},#{elem(pos, 1)}"
   end
+
+  def range_from(n) do
+    Stream.iterate(n, &(&1 + 1))
+  end
 end

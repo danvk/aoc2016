@@ -117,4 +117,10 @@ https://stackoverflow.com/questions/36134979/hash-md5-in-elixir
 You call an Erlang function like this: `:crypto.hash`.
 You can close a lazy stream by piping it into a greedy `Enum` method.
 
-4543c15 is wrong
+This takes ~6s to run. Building with MIX_ENV=prod doesn't make much of a difference. I assume all the time is spent inside `crypto.hash`.
+
+There's no built-in way to do an unbounded range, but it's easy to implement:
+
+```elixir
+Stream.iterate(0, &(&1 + 1))
+```
