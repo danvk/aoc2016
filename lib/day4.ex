@@ -1,3 +1,4 @@
+# https://adventofcode.com/2016/day/4
 defmodule Day4 do
   def count_letters(str) do
     str
@@ -10,7 +11,9 @@ defmodule Day4 do
 
   def parse_line(line) do
     [room, checksum] = String.split(line, ["[", "]"], trim: true)
-    {room, checksum}
+    parts = String.split(room, "-", trim: true)
+    sector = List.last(parts) |> String.to_integer()
+    {room, checksum, sector}
   end
 
   @spec counts_to_checksum(any()) :: binary()
@@ -27,13 +30,16 @@ defmodule Day4 do
     IO.inspect(instrs)
 
     counts =
-      Enum.map(instrs, fn {room, chk} -> {counts_to_checksum(count_letters(room)), chk} end)
+      Enum.map(instrs, fn {room, chk, sector} ->
+        {counts_to_checksum(count_letters(room)), chk, sector}
+      end)
 
     IO.inspect(instrs |> Enum.at(2) |> elem(0))
     IO.inspect(count_letters(instrs |> Enum.at(2) |> elem(0)))
 
-    valids = Enum.filter(counts, fn {chk, chk2} -> chk == chk2 end)
+    valids = Enum.filter(counts, fn {chk, chk2, _} -> chk == chk2 end)
     IO.puts(valids |> Enum.count())
-    IO.inspect(counts)
+    IO.puts(valids |> Enum.map(&elem(&1, 2)) |> Enum.sum())
+    # IO.inspect(counts)
   end
 end
