@@ -104,3 +104,5 @@ He runs his code through `iex`.
 ## Day 4
 
 Part 1: 254 is too low
+
+I completely misread what the problem was asking for. It wanted the sum of the sector IDs, not the number of valid rooms.

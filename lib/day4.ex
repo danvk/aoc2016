@@ -16,14 +16,26 @@ defmodule Day4 do
     {room, checksum, sector}
   end
 
-  @spec counts_to_checksum(any()) :: binary()
   def counts_to_checksum(checksum) do
     Enum.take(checksum, 5)
     |> Enum.map(fn {k, _} -> k end)
     |> List.to_string()
   end
 
-  @spec main(nonempty_maybe_improper_list()) :: 0
+  def shift_char(c, n) do
+    case c do
+      ?- -> ?\s
+      _ -> ?a + rem(c - ?a + n, 26)
+    end
+  end
+
+  def decrypt_room(room, sector_id) do
+    room
+    |> String.to_charlist()
+    |> Enum.map(&shift_char(&1, sector_id))
+    |> List.to_string()
+  end
+
   def main(args) do
     input_file = hd(args)
     instrs = Util.read_lines(input_file) |> Enum.map(&parse_line/1)
@@ -34,12 +46,21 @@ defmodule Day4 do
         {counts_to_checksum(count_letters(room)), chk, sector}
       end)
 
-    IO.inspect(instrs |> Enum.at(2) |> elem(0))
-    IO.inspect(count_letters(instrs |> Enum.at(2) |> elem(0)))
+    # IO.inspect(instrs |> Enum.at(2) |> elem(0))
+    # IO.inspect(count_letters(instrs |> Enum.at(2) |> elem(0)))
 
     valids = Enum.filter(counts, fn {chk, chk2, _} -> chk == chk2 end)
     IO.puts(valids |> Enum.count())
     IO.puts(valids |> Enum.map(&elem(&1, 2)) |> Enum.sum())
     # IO.inspect(counts)
+
+    decrypted =
+      Enum.map(instrs, fn {room, _, sector} ->
+        {decrypt_room(room, sector), sector}
+      end)
+
+    norths = Enum.filter(decrypted, fn {room, _} -> String.contains?(room, "north") end)
+
+    IO.inspect(norths)
   end
 end
