@@ -36,8 +36,7 @@ defmodule Day4 do
     |> List.to_string()
   end
 
-  def main(args) do
-    input_file = hd(args)
+  def main(input_file) do
     instrs = Util.read_lines(input_file) |> Enum.map(&parse_line/1)
     IO.inspect(instrs)
 

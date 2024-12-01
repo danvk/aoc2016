@@ -3,7 +3,7 @@ defmodule Aoc2016.MixProject do
 
   def project do
     [
-      app: :day4,
+      app: :main,
       version: "0.1.0",
       escript: escript(),
       deps: deps()
@@ -18,7 +18,7 @@ defmodule Aoc2016.MixProject do
   end
 
   defp escript do
-    [main_module: Day4]
+    [main_module: Main]
   end
 
   # Run "mix help deps" to learn about dependencies.

@@ -15,9 +15,7 @@ defmodule Day3 do
     for i <- 0..2, do: for(j <- 0..2, do: Enum.at(Enum.at(ary, j), i))
   end
 
-  def main(args) do
-    input_file = hd(args)
-
+  def main(input_file) do
     instrs =
       Util.read_lines(input_file)
       |> Enum.map(&String.split/1)
