@@ -5,7 +5,17 @@ defmodule Day5 do
   end
 
   def main(input_file) do
-    instrs = Util.read_lines(input_file) |> Enum.map(&parse_line/1)
-    IO.inspect(instrs)
+    door_id = Util.read_lines(input_file) |> hd |> parse_line()
+
+    nums =
+      0..100_000_000
+      |> Stream.map(fn i ->
+        :crypto.hash(:md5, "#{door_id}#{i}") |> Base.encode16(case: :lower)
+      end)
+      |> Stream.filter(&String.starts_with?(&1, "00000"))
+      |> Enum.take(8)
+
+    IO.inspect(nums)
+    IO.puts(nums |> Enum.map(&String.at(&1, 5)) |> Enum.join())
   end
 end

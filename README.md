@@ -108,3 +108,13 @@ Part 1: 254 is too low
 I completely misread what the problem was asking for. It wanted the sum of the sector IDs, not the number of valid rooms.
 
 After part 1, part 2 was more straightforward. In Elixir it's not `a % b`, it's `rem(a, b)`. There is a `String.contains?` function that was helpful for part 2.
+
+## Day 5
+
+https://elixirforum.com/t/is-it-possible-to-have-lazy-evaluation-on-list-comprehensions/48136/5
+https://stackoverflow.com/questions/36134979/hash-md5-in-elixir
+
+You call an Erlang function like this: `:crypto.hash`.
+You can close a lazy stream by piping it into a greedy `Enum` method.
+
+4543c15 is wrong
