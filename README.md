@@ -124,3 +124,5 @@ There's no built-in way to do an unbounded range, but it's easy to implement:
 ```elixir
 Stream.iterate(0, &(&1 + 1))
 ```
+
+I wound up taking 24 "interesting" hashes for my input on part 2. A nice extension to this solution would lazily take only as many as needed.
