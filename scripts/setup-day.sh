@@ -37,9 +37,9 @@ head $dir/input.txt
 curl "$url" \
   --silent \
   -H "$header" \
-  > /tmp/advent.html
+  > $dir/day$day.html
 
-./scripts/extract-sample.ts /tmp/advent.html $dir
+./scripts/extract-sample.ts $dir/day$day.html $dir
 
 echo ''
 echo "mix escript.build && ./main $day $dir/input.txt"
