@@ -129,6 +129,10 @@ I wound up taking 24 "interesting" hashes for my input on part 2. A nice extensi
 
 ## Day 6
 
+Part 2: odqnikqv
+
 ## Day 7
 
 Part 1: 113
+
+I used a state machine to split out the hypernet sequences and used an `Enum.zip` with four inputs to check for the ABBA pattern. I'm curious how a more experienced Elixirite might do this.
