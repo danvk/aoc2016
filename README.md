@@ -129,10 +129,19 @@ I wound up taking 24 "interesting" hashes for my input on part 2. A nice extensi
 
 ## Day 6
 
+What's the most idiomatic way to pull out the first item from a tuple?
+
+```elixir
+fn {a, _b} -> a end
+&elem(&1, 0)
+```
+
 Part 2: odqnikqv
 
 ## Day 7
 
-Part 1: 113
+Part 1: 113 -- too high
 
 I used a state machine to split out the hypernet sequences and used an `Enum.zip` with four inputs to check for the ABBA pattern. I'm curious how a more experienced Elixirite might do this.
+
+My bug was allowing a match like `ab[c]ba`.

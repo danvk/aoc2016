@@ -13,7 +13,7 @@ defmodule Day7 do
         fn c, {in_chars, out_chars, in_acc} ->
           case {c, in_acc} do
             {?[, false} -> {in_chars, [?| | out_chars], true}
-            {?], true} -> {in_chars, out_chars, false}
+            {?], true} -> {[?| | in_chars], out_chars, false}
             {_c, true} -> {in_chars, [c | out_chars], true}
             {c, false} -> {[c | in_chars], out_chars, false}
           end

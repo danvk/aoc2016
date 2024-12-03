@@ -32,13 +32,11 @@ defmodule Day6 do
 
     part1 =
       counts
-      |> Enum.map(fn {i, cs} -> {i, most_freq(cs)} end)
-      |> Enum.map(fn {_i, c} -> c end)
+      |> Enum.map(fn {_i, cs} -> most_freq(cs) end)
 
     part2 =
       counts
-      |> Enum.map(fn {i, cs} -> {i, least_freq(cs)} end)
-      |> Enum.map(fn {_i, c} -> c end)
+      |> Enum.map(fn {_i, cs} -> least_freq(cs) end)
 
     IO.puts(part1)
     IO.puts(part2)
