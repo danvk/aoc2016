@@ -35,10 +35,25 @@ defmodule Day7 do
     has_abba(in_chars) && not has_abba(out_chars)
   end
 
+  def get_abas(txt) do
+    Enum.zip([txt, txt |> Enum.drop(1), txt |> Enum.drop(2)])
+    |> Enum.filter(fn {a, b, c} -> a == c && a != b && a != ?| && b != ?| end)
+  end
+
+  def supports_ssl({in_chars, out_chars}) do
+    abas = get_abas(in_chars)
+    babs = get_abas(out_chars)
+
+    Enum.any?(abas, fn {a, b, _} ->
+      Enum.any?(babs, fn {b2, a2, _} -> a == a2 && b == b2 end)
+    end)
+  end
+
   def main(input_file) do
     instrs = Util.read_lines(input_file) |> Enum.map(&split_hypernet/1)
     # supports = Enum.zip(instrs, Enum.map(instrs, &supports_tls/1))
     # IO.inspect(supports)
     IO.puts(instrs |> Enum.filter(&supports_tls/1) |> Enum.count())
+    IO.puts(instrs |> Enum.filter(&supports_ssl/1) |> Enum.count())
   end
 end
