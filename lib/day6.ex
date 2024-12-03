@@ -19,9 +19,9 @@ defmodule Day6 do
     counts =
       Util.read_lines(input_file)
       |> Enum.flat_map(fn line -> Enum.zip(0..String.length(line), String.to_charlist(line)) end)
-      |> Enum.group_by(fn {i, c} -> i end, fn {i, c} -> c end)
+      |> Enum.group_by(fn {i, _c} -> i end, fn {_i, c} -> c end)
       |> Enum.map(fn {i, cs} -> {i, most_freq(cs)} end)
-      |> Enum.map(fn {i, c} -> c end)
+      |> Enum.map(fn {_i, c} -> c end)
 
     IO.inspect(counts)
   end

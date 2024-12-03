@@ -126,3 +126,9 @@ Stream.iterate(0, &(&1 + 1))
 ```
 
 I wound up taking 24 "interesting" hashes for my input on part 2. A nice extension to this solution would lazily take only as many as needed.
+
+## Day 6
+
+## Day 7
+
+Part 1: 113
