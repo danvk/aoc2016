@@ -103,8 +103,6 @@ He runs his code through `iex`.
 
 ## Day 4
 
-Part 1: 254 is too low
-
 I completely misread what the problem was asking for. It wanted the sum of the sector IDs, not the number of valid rooms.
 
 After part 1, part 2 was more straightforward. In Elixir it's not `a % b`, it's `rem(a, b)`. There is a `String.contains?` function that was helpful for part 2.
@@ -136,11 +134,7 @@ fn {a, _b} -> a end
 &elem(&1, 0)
 ```
 
-Part 2: odqnikqv
-
 ## Day 7
-
-Part 1: 113 -- too high
 
 I used a state machine to split out the hypernet sequences and used an `Enum.zip` with four inputs to check for the ABBA pattern. I'm curious how a more experienced Elixirite might do this.
 
