@@ -139,3 +139,7 @@ fn {a, _b} -> a end
 I used a state machine to split out the hypernet sequences and used an `Enum.zip` with four inputs to check for the ABBA pattern. I'm curious how a more experienced Elixirite might do this.
 
 My bug was allowing a match like `ab[c]ba`.
+
+## Day 8
+
+How can I try matching a series of regular expressions?

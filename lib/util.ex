@@ -20,4 +20,43 @@ defmodule Util do
   def range_from(n) do
     Stream.iterate(n, &(&1 + 1))
   end
+
+  def first({a, _b}) do
+    a
+  end
+
+  def first([a, _b]) do
+    a
+  end
+
+  def second({_a, b}) do
+    b
+  end
+
+  def second([_a, b]) do
+    b
+  end
+
+  def inspect(x) do
+    IO.inspect(x, charlists: false)
+  end
+
+  def inspect(a, b) do
+    IO.inspect({a, b}, charlists: false)
+  end
+
+  def read_ints(txt, delim) do
+    txt |> String.split(delim) |> Enum.map(&String.to_integer/1)
+  end
+
+  def print_grid(grid, {w, h}) do
+    for y <- 0..h do
+      for x <- 0..w do
+        # XXX any simpler way to print a single char?
+        IO.write(List.to_string([Map.get(grid, {x, y}, ?.)]))
+      end
+
+      IO.puts("")
+    end
+  end
 end
