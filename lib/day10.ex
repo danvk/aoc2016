@@ -25,8 +25,11 @@ defmodule Day10 do
     end
   end
 
-  defp give(values, _bot, {:output, _target}, _num) do
-    # IO.puts("#{bot} outputs #{num} to #{target}")
+  defp give(values, bot, {:output, target}, num) do
+    if target < 3 do
+      IO.puts("#{bot} outputs #{num} to #{target}")
+    end
+
     values
   end
 
