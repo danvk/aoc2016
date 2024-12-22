@@ -147,3 +147,7 @@ How can I try matching a series of regular expressions?
 ## Day 9
 
 Part 2 feels kinda hard for a day 9! It was kind of Eric to make the repeated sections not fall in the middle of a marker.
+
+## Day 10
+
+This one was kind of silly.
