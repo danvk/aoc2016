@@ -53,6 +53,22 @@ defmodule Day11 do
     |> Enum.any?()
   end
 
+  def move(state, new_level, items) do
+  end
+
+  def nexts(state) do
+    next_levels = [state.level - 1, state.level + 1] |> Enum.filter(&(&1 >= 1 && &1 <= 4))
+    pairs = (for {a, b} <- Util.pairs(state.items), do: [a, b])
+    |> Enum.filter(fn
+      [{a, :chip}, {b, :rtg}] when a != b -> false
+      [{a, :rtg}, {b, :chip}] when a != b -> false
+      [_, _] -> true
+    end)
+    singles = for item <- state.items, do: [item]
+    possible_items = [[]] + singles + pairs
+    for level <- next_levels, items <- possible_items, do: {level, items}
+  end
+
   def main(input_file) do
     instrs = Util.read_lines(input_file)
 
@@ -84,5 +100,7 @@ defmodule Day11 do
     IO.inspect(is_fatal(init_state))
     IO.inspect(is_fatal(final_state))
     IO.inspect(is_fatal(fatal_state))
+
+    IO.inspect(nexts(init_state))
   end
 end
