@@ -58,14 +58,17 @@ defmodule Day11 do
 
   def nexts(state) do
     next_levels = [state.level - 1, state.level + 1] |> Enum.filter(&(&1 >= 1 && &1 <= 4))
-    pairs = (for {a, b} <- Util.pairs(state.items), do: [a, b])
-    |> Enum.filter(fn
-      [{a, :chip}, {b, :rtg}] when a != b -> false
-      [{a, :rtg}, {b, :chip}] when a != b -> false
-      [_, _] -> true
-    end)
+
+    pairs =
+      for({a, b} <- Util.pairs(state.items), do: [a, b])
+      |> Enum.filter(fn
+        [{a, :chip}, {b, :rtg}] when a != b -> false
+        [{a, :rtg}, {b, :chip}] when a != b -> false
+        [_, _] -> true
+      end)
+
     singles = for item <- state.items, do: [item]
-    possible_items = [[]] + singles + pairs
+    possible_items = [[]] ++ singles ++ pairs
     for level <- next_levels, items <- possible_items, do: {level, items}
   end
 
