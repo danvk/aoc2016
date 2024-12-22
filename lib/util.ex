@@ -71,7 +71,7 @@ defmodule Util do
   end
 
   def pairs(xs) do
-    for {x, i} <- Enum.with_index(xs), y <- Enum.drop(xs, i), do: {x, y}
+    for {x, i} <- Enum.with_index(xs), y <- Enum.drop(xs, i + 1), do: {x, y}
   end
 
   def first({a, _b}) do

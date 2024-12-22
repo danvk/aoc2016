@@ -54,22 +54,39 @@ defmodule Day11 do
   end
 
   def move(state, new_level, items) do
+    old_items = state.items[state.level]
+
+    %State{
+      level: new_level,
+      items:
+        state.items
+        |> Map.put(state.level, old_items |> Enum.filter(&(!Enum.member?(items, &1))))
+        |> Map.put(new_level, Map.get(state.items, new_level) ++ items)
+    }
   end
 
   def nexts(state) do
     next_levels = [state.level - 1, state.level + 1] |> Enum.filter(&(&1 >= 1 && &1 <= 4))
 
+    items = state.items[state.level]
+
     pairs =
-      for({a, b} <- Util.pairs(state.items), do: [a, b])
+      for({a, b} <- Util.pairs(items), do: [a, b])
       |> Enum.filter(fn
         [{a, :chip}, {b, :rtg}] when a != b -> false
         [{a, :rtg}, {b, :chip}] when a != b -> false
         [_, _] -> true
       end)
 
-    singles = for item <- state.items, do: [item]
+    singles = for item <- items, do: [item]
     possible_items = [[]] ++ singles ++ pairs
-    for level <- next_levels, items <- possible_items, do: {level, items}
+
+    for(
+      level <- next_levels,
+      items <- possible_items,
+      do: move(state, level, items)
+    )
+    |> Enum.reject(&is_fatal/1)
   end
 
   def main(input_file) do
@@ -103,6 +120,8 @@ defmodule Day11 do
     IO.inspect(is_fatal(init_state))
     IO.inspect(is_fatal(final_state))
     IO.inspect(is_fatal(fatal_state))
+
+    # IO.inspect(move(init_state, 2, []))
 
     IO.inspect(nexts(init_state))
   end
