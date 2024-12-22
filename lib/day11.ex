@@ -93,6 +93,10 @@ defmodule Day11 do
     for state <- nexts(state), do: {1, state}
   end
 
+  def cost(state) do
+    for({level, items} <- state.items, do: (4 - level) * Enum.count(items)) |> Enum.sum()
+  end
+
   def main(input_file) do
     instrs = Util.read_lines(input_file)
 
@@ -127,10 +131,12 @@ defmodule Day11 do
 
     # IO.inspect(move(init_state, 2, []))
 
-    IO.inspect(nexts(init_state))
+    # IO.inspect(nexts(init_state))
+    IO.inspect(cost(init_state))
+    IO.inspect(cost(final_state))
 
-    {cost, _path} = Search.a_star([init_state], &is_success/1, &neighbors/1)
-    # IO.inspect(path)
+    {cost, path} = Search.a_star([init_state], &is_success/1, &neighbors/1)
+    IO.inspect(Enum.zip(Enum.map(path, &cost/1), path))
     IO.inspect(cost)
   end
 end
