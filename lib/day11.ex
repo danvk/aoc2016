@@ -79,7 +79,7 @@ defmodule Day11 do
       end)
 
     singles = for item <- items, do: [item]
-    possible_items = [[]] ++ singles ++ pairs
+    possible_items = singles ++ pairs
 
     for(
       level <- next_levels,
@@ -87,6 +87,10 @@ defmodule Day11 do
       do: move(state, level, items)
     )
     |> Enum.reject(&is_fatal/1)
+  end
+
+  def neighbors(state) do
+    for state <- nexts(state), do: {1, state}
   end
 
   def main(input_file) do
@@ -124,5 +128,9 @@ defmodule Day11 do
     # IO.inspect(move(init_state, 2, []))
 
     IO.inspect(nexts(init_state))
+
+    {cost, _path} = Search.a_star([init_state], &is_success/1, &neighbors/1)
+    # IO.inspect(path)
+    IO.inspect(cost)
   end
 end
