@@ -190,6 +190,21 @@ defmodule Day11 do
         do: {level, item}
       )
       |> Enum.sort()
+
+    {_, _, out} =
+      for {level, {sym, type}} <- items, reduce: {1, %{}, []} do
+        {n, map, out} ->
+          {map, k, n} =
+            if Map.get(map, sym) do
+              {map, Map.get(map, sym), n}
+            else
+              {Map.put(map, sym, n), n, n + 1}
+            end
+
+          {n, map, [{level, k, type} | out]}
+      end
+
+    {state.level, out |> Enum.sort()}
   end
 
   def main(input_file) do
@@ -221,8 +236,11 @@ defmodule Day11 do
     final_state = make_target(init_state)
     IO.puts("init:")
     IO.inspect(init_state)
+    IO.inspect(cache_key(init_state))
+
     IO.puts("target:")
     IO.inspect(final_state)
+    IO.inspect(cache_key(final_state))
     # IO.inspect(is_success(final_state))
     # IO.inspect(is_fatal(init_state))
     # IO.inspect(is_fatal(final_state))
@@ -234,7 +252,7 @@ defmodule Day11 do
     # IO.inspect(cost(init_state))
     # IO.inspect(cost(final_state))
 
-    {cost, _path} = Search.a_star([init_state], &is_success/1, &neighbors/1)
+    {cost, _path} = Search.a_star([init_state], &is_success/1, &neighbors/1, &cache_key/1)
     # IO.inspect(Enum.zip(Enum.map(path, &cost/1), path))
     # cost = bidirectional_search(init_state, final_state, &nexts/1)
     IO.inspect(cost)
