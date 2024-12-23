@@ -18,7 +18,9 @@ defmodule Day11 do
     :R => 4,
     :Co => 5,
     :E => 6,
-    :D => 7
+    :D => 7,
+    :H => 8,
+    :L => 9
   }
 
   defmodule State do
