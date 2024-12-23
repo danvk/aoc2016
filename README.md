@@ -162,4 +162,13 @@ Part 2: After 49 minutes, it output 83 which was incorrect. Maybe I should flood
 
 … or maybe not. I'm still really bogging down.
 
-Is it safe to assume that you never move an RTG down? That would be a big constraint.
+Is it safe to assume that you never move an RTG down? That would be a big constraint. Evidently not, that works for the sample but not for my input.
+
+I feel like I'm missing something. This is way too hard.
+
+I grabbed this solution:
+https://github.com/hbldh/AdventOfCode/blob/master/AOC2016/11.py
+
+My answer for part 2 is 71, so my code from yesterday must have missed a state. This solution took ~1 minute to run and looks like it takes the exact same approach as mine. So maybe my constant factors are just terrible.
+
+His solution caches the `is_valid` calls. I guess that could help.

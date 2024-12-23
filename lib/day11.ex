@@ -1,7 +1,5 @@
 # https://adventofcode.com/2016/day/11
 defmodule Day11 do
-  alias ElixirSense.Core.Compiler.State
-
   @elements %{
     "hydrogen" => :H,
     "lithium" => :L,
@@ -36,7 +34,9 @@ defmodule Day11 do
     Enum.all?(1..3 |> Enum.map(&Enum.empty?(state.items[&1])))
   end
 
-  def is_fatal_level(items) do
+  defp is_fatal_level([]), do: false
+
+  defp is_fatal_level(items) do
     rtgs = for {el, :rtg} <- items, do: el, into: MapSet.new()
 
     if rtgs |> Enum.empty?() do
@@ -71,27 +71,64 @@ defmodule Day11 do
   end
 
   def nexts(state) do
-    next_levels = [state.level - 1, state.level + 1] |> Enum.filter(&(&1 >= 1 && &1 <= 4))
+    level = state.level
 
-    items = state.items[state.level]
+    next_levels =
+      cond do
+        state.level == 2 and Enum.empty?(state.items[1]) -> [3]
+        state.level == 3 and Enum.empty?(state.items[1]) and Enum.empty?(state.items[2]) -> [4]
+        state.level == 1 -> [2]
+        state.level == 4 -> [3]
+        true -> [level - 1, level + 1]
+      end
+
+    items = state.items[level]
 
     pairs =
       for({a, b} <- Util.pairs(items), do: [a, b])
-      |> Enum.filter(fn
-        [{a, :chip}, {b, :rtg}] when a != b -> false
-        [{a, :rtg}, {b, :chip}] when a != b -> false
-        [_, _] -> true
-      end)
+
+    pairs_up =
+      for(
+        level when level > state.level <- next_levels,
+        items <- pairs,
+        do: {level, items}
+      )
+      |> Enum.map(fn {level, items} -> move(state, level, items) end)
+      |> Enum.reject(&is_fatal/1)
+
+    pairs_down =
+      for(
+        level when level < state.level <- next_levels,
+        items <- pairs,
+        do: {level, items}
+      )
+      |> Enum.map(fn {level, items} -> move(state, level, items) end)
+      |> Enum.reject(&is_fatal/1)
 
     singles = for item <- items, do: [item]
-    possible_items = singles ++ pairs
 
-    for(
-      level <- next_levels,
-      items <- possible_items,
-      do: move(state, level, items)
-    )
-    |> Enum.reject(&is_fatal/1)
+    singles_up =
+      for(
+        level when level > state.level <- next_levels,
+        items <- singles,
+        do: {level, items}
+      )
+      |> Enum.map(fn {level, items} -> move(state, level, items) end)
+      |> Enum.reject(&is_fatal/1)
+
+    singles_down =
+      for(
+        level when level < state.level <- next_levels,
+        items <- singles,
+        do: {level, items}
+      )
+      |> Enum.map(fn {level, items} -> move(state, level, items) end)
+      |> Enum.reject(&is_fatal/1)
+
+    # If you can move two items upstairs, don't bother bringing one item upstairs.
+    # If you can move one item downstairs, don't bother bringing two items downstairs.
+    if(Enum.empty?(pairs_up), do: singles_up, else: pairs_up) ++
+      if Enum.empty?(singles_down), do: pairs_down, else: singles_down
   end
 
   def neighbors(state) do
@@ -104,7 +141,7 @@ defmodule Day11 do
 
   # Expand in both directions from start to finish until they connect.
   # Returns d
-  defp bidirectional_search(start, finish, neighbors_fn) do
+  def bidirectional_search(start, finish, neighbors_fn) do
     bidi(0, MapSet.new([start]), MapSet.new([finish]), neighbors_fn, MapSet.new())
   end
 
@@ -123,7 +160,7 @@ defmodule Day11 do
     end
   end
 
-  def intersects(a, b) do
+  defp intersects(a, b) do
     if MapSet.size(a) <= MapSet.size(b) do
       a |> Enum.find(fn n -> MapSet.member?(b, n) end) != nil
     else
@@ -131,7 +168,7 @@ defmodule Day11 do
     end
   end
 
-  def make_target(state) do
+  defp make_target(state) do
     items = for(items <- Map.values(state.items), item <- items, do: item) |> Enum.sort()
 
     %State{
@@ -187,9 +224,9 @@ defmodule Day11 do
     # IO.inspect(cost(init_state))
     # IO.inspect(cost(final_state))
 
-    # {cost, _path} = Search.a_star([init_state], &is_success/1, &neighbors/1)
+    {cost, _path} = Search.a_star([init_state], &is_success/1, &neighbors/1)
     # IO.inspect(Enum.zip(Enum.map(path, &cost/1), path))
-    cost = bidirectional_search(init_state, final_state, &nexts/1)
+    # cost = bidirectional_search(init_state, final_state, &nexts/1)
     IO.inspect(cost)
   end
 end
