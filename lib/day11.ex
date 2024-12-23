@@ -9,7 +9,9 @@ defmodule Day11 do
     "thulium" => :T,
     "promethium" => :Pr,
     "ruthenium" => :R,
-    "cobalt" => :Co
+    "cobalt" => :Co,
+    "elerium" => :E,
+    "dilithium" => :D
   }
 
   defmodule State do

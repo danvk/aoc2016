@@ -157,3 +157,5 @@ This one was kind of silly.
 I'm having a lot of trouble with this one! There are ten items (five chips and five RTGs) that can be at one of four levels. The elevator can also be at one of four levels. So that should be 4^11 possible states, ~4M. That's not that much! Maybe my `neighbors` function is just incredibly slow?
 
 Oh, maybe I should sort the lists for each floor!
+
+Part 2: After 49 minutes, it output 83 which was incorrect. Maybe I should flood fill from both directions (start and end)? The step function is the same in both directions, so this should be a big win.
