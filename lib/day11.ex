@@ -182,6 +182,16 @@ defmodule Day11 do
     }
   end
 
+  def cache_key(state) do
+    items =
+      for(
+        {level, items} <- state.items,
+        item <- items,
+        do: {level, item}
+      )
+      |> Enum.sort()
+  end
+
   def main(input_file) do
     instrs = Util.read_lines(input_file)
 
