@@ -252,9 +252,11 @@ defmodule Day11 do
     # IO.inspect(cost(init_state))
     # IO.inspect(cost(final_state))
 
-    {cost, _path} = Search.a_star([init_state], &is_success/1, &neighbors/1, &cache_key/1)
+    {cost, path} = Search.a_star([init_state], &is_success/1, &neighbors/1, &cache_key/1)
     # IO.inspect(Enum.zip(Enum.map(path, &cost/1), path))
     # cost = bidirectional_search(init_state, final_state, &nexts/1)
+    # IO.inspect(path)
+    path |> Enum.each(&IO.inspect/1)
     IO.inspect(cost)
   end
 end
