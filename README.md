@@ -159,3 +159,7 @@ I'm having a lot of trouble with this one! There are ten items (five chips and f
 Oh, maybe I should sort the lists for each floor!
 
 Part 2: After 49 minutes, it output 83 which was incorrect. Maybe I should flood fill from both directions (start and end)? The step function is the same in both directions, so this should be a big win.
+
+… or maybe not. I'm still really bogging down.
+
+Is it safe to assume that you never move an RTG down? That would be a big constraint.

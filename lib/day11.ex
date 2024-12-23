@@ -102,6 +102,49 @@ defmodule Day11 do
     for({level, items} <- state.items, do: (4 - level) * Enum.count(items)) |> Enum.sum()
   end
 
+  # Expand in both directions from start to finish until they connect.
+  # Returns d
+  defp bidirectional_search(start, finish, neighbors_fn) do
+    bidi(0, MapSet.new([start]), MapSet.new([finish]), neighbors_fn, MapSet.new())
+  end
+
+  defp bidi(n, starts, finishes, n_fn, garbage) do
+    IO.puts("n=#{n}, a=#{MapSet.size(starts)}, b=#{MapSet.size(finishes)}")
+
+    if intersects(starts, finishes) do
+      n
+    else
+      next_starts =
+        for(n <- starts, next <- n_fn.(n), into: MapSet.new(), do: next)
+        |> MapSet.difference(starts)
+
+      new_garbage = MapSet.union(garbage, starts)
+      bidi(n + 1, finishes, next_starts, n_fn, new_garbage)
+    end
+  end
+
+  def intersects(a, b) do
+    if MapSet.size(a) <= MapSet.size(b) do
+      a |> Enum.find(fn n -> MapSet.member?(b, n) end) != nil
+    else
+      intersects(b, a)
+    end
+  end
+
+  def make_target(state) do
+    items = for(items <- Map.values(state.items), item <- items, do: item) |> Enum.sort()
+
+    %State{
+      level: 4,
+      items: %{
+        1 => [],
+        2 => [],
+        3 => [],
+        4 => items
+      }
+    }
+  end
+
   def main(input_file) do
     instrs = Util.read_lines(input_file)
 
@@ -118,30 +161,35 @@ defmodule Day11 do
     items = %{1 => [], 2 => [], 3 => [], 4 => []} |> Map.merge(items)
     init_state = %State{level: 1, items: items}
 
-    final_state = %State{
-      level: 1,
-      items: %{1 => [], 2 => [], 3 => [], 4 => [{:H, :rtg}, {:H, :chip}]}
-    }
-
-    fatal_state = %State{
-      level: 1,
-      items: %{1 => [], 2 => [], 3 => [{:H, :chip}, {:Po, :rtg}], 4 => [{:H, :rtg}]}
-    }
+    # final_state = %State{
+    #   level: 1,
+    #   items: %{1 => [], 2 => [], 3 => [], 4 => [{:H, :rtg}, {:H, :chip}]}
+    # }
+    # fatal_state = %State{
+    #   level: 1,
+    #   items: %{1 => [], 2 => [], 3 => [{:H, :chip}, {:Po, :rtg}], 4 => [{:H, :rtg}]}
+    # }
 
     IO.inspect(init_state)
-    IO.inspect(is_success(final_state))
-    IO.inspect(is_fatal(init_state))
-    IO.inspect(is_fatal(final_state))
-    IO.inspect(is_fatal(fatal_state))
+    final_state = make_target(init_state)
+    IO.puts("init:")
+    IO.inspect(init_state)
+    IO.puts("target:")
+    IO.inspect(final_state)
+    # IO.inspect(is_success(final_state))
+    # IO.inspect(is_fatal(init_state))
+    # IO.inspect(is_fatal(final_state))
+    # IO.inspect(is_fatal(fatal_state))
 
     # IO.inspect(move(init_state, 2, []))
 
     # IO.inspect(nexts(init_state))
-    IO.inspect(cost(init_state))
-    IO.inspect(cost(final_state))
+    # IO.inspect(cost(init_state))
+    # IO.inspect(cost(final_state))
 
-    {cost, _path} = Search.a_star([init_state], &is_success/1, &neighbors/1)
+    # {cost, _path} = Search.a_star([init_state], &is_success/1, &neighbors/1)
     # IO.inspect(Enum.zip(Enum.map(path, &cost/1), path))
+    cost = bidirectional_search(init_state, final_state, &nexts/1)
     IO.inspect(cost)
   end
 end
