@@ -11,6 +11,15 @@ defmodule Day11 do
     "elerium" => :E,
     "dilithium" => :D
   }
+  @el_to_idx %{
+    :Po => 1,
+    :T => 2,
+    :Pr => 3,
+    :R => 4,
+    :Co => 5,
+    :E => 6,
+    :D => 7
+  }
 
   defmodule State do
     defstruct level: 1, items: %{}
@@ -20,8 +29,8 @@ defmodule Day11 do
     @elements
     |> Enum.flat_map(fn {elem, sym} ->
       [
-        if(String.contains?(line, "#{elem} generator"), do: {sym, :rtg}, else: nil),
-        if(String.contains?(line, "#{elem}-compatible microchip"),
+        if(String.contains?(line, " #{elem} generator"), do: {sym, :rtg}, else: nil),
+        if(String.contains?(line, " #{elem}-compatible microchip"),
           do: {sym, :chip},
           else: nil
         )
@@ -191,6 +200,13 @@ defmodule Day11 do
       )
       |> Enum.sort()
 
+    items
+    |> Enum.each(fn {_, {sym, _}} ->
+      unless Map.get(@el_to_idx, sym) do
+        raise("Missing #{sym}")
+      end
+    end)
+
     {_, _, out} =
       for {level, {sym, type}} <- items, reduce: {1, %{}, []} do
         {n, map, out} ->
@@ -205,6 +221,23 @@ defmodule Day11 do
       end
 
     {state.level, out |> Enum.sort()}
+  end
+
+  def state_to_str(state) do
+    items = state.items
+
+    items_list =
+      1..4
+      |> Enum.map(fn n ->
+        items[n]
+        |> Enum.map(fn
+          {sym, :rtg} -> @el_to_idx[sym]
+          {sym, :chip} -> -@el_to_idx[sym]
+        end)
+        |> Enum.sort()
+      end)
+
+    {state.level, items_list}
   end
 
   def main(input_file) do
@@ -256,7 +289,7 @@ defmodule Day11 do
     # IO.inspect(Enum.zip(Enum.map(path, &cost/1), path))
     # cost = bidirectional_search(init_state, final_state, &nexts/1)
     # IO.inspect(path)
-    path |> Enum.each(&IO.inspect/1)
+    path |> Enum.each(fn state -> IO.inspect(state_to_str(state)) end)
     IO.inspect(cost)
   end
 end

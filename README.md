@@ -172,3 +172,10 @@ https://github.com/hbldh/AdventOfCode/blob/master/AOC2016/11.py
 My answer for part 2 is 71, so my code from yesterday must have missed a state. This solution took ~1 minute to run and looks like it takes the exact same approach as mine. So maybe my constant factors are just terrible.
 
 His solution caches the `is_valid` calls. I guess that could help.
+
+This one is even faster:
+https://www.reddit.com/r/adventofcode/comments/5hoia9/2016_day_11_solutions/db1zbu0/
+
+And I figured out my bug. It's so stupid! My hacky parsing code matched "Dilithium" as both "Lithium" _and_ "Dilithium". So I both made the problem harder than necessary, and gave myself a wrong answer.
+
+In any case, I finally got the right answer and my code runs incredibly fast: 0.2s for part 1 and 3.2s for part 2.
