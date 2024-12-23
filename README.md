@@ -179,3 +179,5 @@ https://www.reddit.com/r/adventofcode/comments/5hoia9/2016_day_11_solutions/db1z
 And I figured out my bug. It's so stupid! My hacky parsing code matched "Dilithium" as both "Lithium" _and_ "Dilithium". So I both made the problem harder than necessary, and gave myself a wrong answer.
 
 In any case, I finally got the right answer and my code runs incredibly fast: 0.2s for part 1 and 3.2s for part 2.
+
+I went back and ran my zero optimizations version with the correctly-parsed input (commit 712e136). Runs in 2s for part 1, 2 minutes for part 2. This definitely goes down in the annals of costly and ridiculous bugs!
