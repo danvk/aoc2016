@@ -22,6 +22,14 @@ defmodule Search do
     {head, rest} = Heap.split(queue)
     {d, prev, v} = head
 
+    if !Heap.empty?(rest) do
+      {d2, _, v2} = Heap.root(rest)
+
+      if d2 != d do
+        Util.inspect({d2, Heap.size(rest), v2})
+      end
+    end
+
     prev_cost = Map.get(visited, v)
 
     cond do

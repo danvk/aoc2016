@@ -151,3 +151,9 @@ Part 2 feels kinda hard for a day 9! It was kind of Eric to make the repeated se
 ## Day 10
 
 This one was kind of silly.
+
+## Day 11
+
+I'm having a lot of trouble with this one! There are ten items (five chips and five RTGs) that can be at one of four levels. The elevator can also be at one of four levels. So that should be 4^11 possible states, ~4M. That's not that much! Maybe my `neighbors` function is just incredibly slow?
+
+Oh, maybe I should sort the lists for each floor!

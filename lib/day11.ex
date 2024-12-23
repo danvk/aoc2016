@@ -60,8 +60,11 @@ defmodule Day11 do
       level: new_level,
       items:
         state.items
-        |> Map.put(state.level, old_items |> Enum.filter(&(!Enum.member?(items, &1))))
-        |> Map.put(new_level, Map.get(state.items, new_level) ++ items)
+        |> Map.put(
+          state.level,
+          old_items |> Enum.filter(&(!Enum.member?(items, &1))) |> Enum.sort()
+        )
+        |> Map.put(new_level, (Map.get(state.items, new_level) ++ items) |> Enum.sort())
     }
   end
 
@@ -135,8 +138,8 @@ defmodule Day11 do
     IO.inspect(cost(init_state))
     IO.inspect(cost(final_state))
 
-    {cost, path} = Search.a_star([init_state], &is_success/1, &neighbors/1)
-    IO.inspect(Enum.zip(Enum.map(path, &cost/1), path))
+    {cost, _path} = Search.a_star([init_state], &is_success/1, &neighbors/1)
+    # IO.inspect(Enum.zip(Enum.map(path, &cost/1), path))
     IO.inspect(cost)
   end
 end
